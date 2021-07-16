@@ -11,9 +11,9 @@
         android:icon="@mipmap/bluetooth_logo"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity
-            android:name="com.barafael.dodecaControl.MainActivity"
+        android:theme="@style/AppTheme"
+        android:fullBackupContent="@xml/backup_descriptor">
+        <activity android:name="com.barafael.dodecaControl.MainActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
