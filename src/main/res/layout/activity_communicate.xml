@@ -149,8 +149,10 @@
 
             <Button
                 android:id="@+id/communicate_send"
-                style="@style/button_style"
-                android:text="@string/send" />
+                style="@android:style/Widget.Material.Button"
+                android:text="@string/send"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
     </LinearLayout>
