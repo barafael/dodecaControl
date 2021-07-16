@@ -1,82 +1,157 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:orientation="vertical" >
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin"
-        android:layout_marginTop="@dimen/margin"
+        android:layout_height="70dp"
         android:layout_marginLeft="@dimen/margin"
-        android:layout_marginRight="@dimen/margin" >
+        android:layout_marginTop="@dimen/margin"
+        android:layout_marginRight="@dimen/margin"
+        android:layout_marginBottom="@dimen/margin">
 
         <TextView
             android:id="@+id/communicate_connection_text"
-            android:hint="@string/status_disconnected"
-            android:textSize="@dimen/text"
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_height="wrap_content" />
+            android:hint="@string/status_disconnected"
+            android:textSize="@dimen/text" />
 
         <Button
             android:id="@+id/communicate_connect"
-            android:text="@string/connect"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="@string/connect" />
 
     </LinearLayout>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/messages"
-        android:textSize="@dimen/title"
-        android:layout_marginBottom="@dimen/margin"
         android:layout_marginLeft="@dimen/margin"
-        android:layout_marginRight="@dimen/margin" />
+        android:layout_marginRight="@dimen/margin"
+        android:layout_marginBottom="@dimen/margin"
+        android:text="@string/messages"
+        android:textSize="@dimen/title" />
 
     <ScrollView
+        android:id="@+id/messages_scroll"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:fadeScrollbars="true"
+        android:overScrollMode="always"
+        android:scrollbarStyle="insideOverlay">
 
         <TextView
             android:id="@+id/communicate_messages"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/text"
-            android:text="@string/no_messages"
-            android:layout_marginBottom="@dimen/margin"
-            android:layout_marginTop="@dimen/margin"
             android:layout_marginLeft="@dimen/margin"
-            android:layout_marginRight="@dimen/margin" />
+            android:layout_marginTop="@dimen/margin"
+            android:layout_marginRight="@dimen/margin"
+            android:layout_marginBottom="@dimen/margin"
+            android:text="@string/no_messages"
+            android:textSize="@dimen/text" />
 
     </ScrollView>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin"
-        android:layout_marginTop="@dimen/margin"
         android:layout_marginLeft="@dimen/margin"
-        android:layout_marginRight="@dimen/margin" >
+        android:layout_marginTop="@dimen/margin"
+        android:layout_marginRight="@dimen/margin"
+        android:layout_marginBottom="@dimen/margin"
+        android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/communicate_message"
-            android:hint="@string/message"
-            android:layout_width="0dp"
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
             android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:inputType="text"
-            android:importantForAutofill="no" />
+            android:background="?android:attr/listDivider" />
 
-        <Button
-            android:id="@+id/communicate_send"
-            android:text="@string/send"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/action_a_button"
+                style="@android:style/Widget.Material.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Action A" />
+
+            <Button
+                android:id="@+id/action_b_button"
+                style="@android:style/Widget.Material.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Action B" />
+
+            <Button
+                android:id="@+id/action_c_button"
+                style="@android:style/Widget.Material.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Action C" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:paddingTop="5dp">
+
+            <Button
+                android:id="@+id/darken_button"
+                style="@android:style/Widget.Material.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Darken" />
+
+            <Button
+                android:id="@+id/brighten_button"
+                style="@android:style/Widget.Material.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Brighten" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/communicate_message"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1"
+                android:hint="@string/message"
+                android:importantForAutofill="no"
+                android:inputType="text" />
+
+            <Button
+                android:id="@+id/communicate_send"
+                style="@style/button_style"
+                android:text="@string/send" />
+        </LinearLayout>
 
     </LinearLayout>
 

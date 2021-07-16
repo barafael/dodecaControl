@@ -15,6 +15,9 @@ public class CommunicateActivity extends AppCompatActivity {
     private TextView connectionText, messagesView;
     private EditText messageBox;
     private Button sendButton, connectButton;
+    private Button darkenButton, brightenButton;
+
+    private Button actionAButton, actionBButton, actionCButton;
 
     private CommunicateViewModel viewModel;
 
@@ -43,9 +46,15 @@ public class CommunicateActivity extends AppCompatActivity {
         messageBox = findViewById(R.id.communicate_message);
         sendButton = findViewById(R.id.communicate_send);
         connectButton = findViewById(R.id.communicate_connect);
+        darkenButton = findViewById(R.id.darken_button);
+        brightenButton = findViewById(R.id.brighten_button);
+
+        actionAButton = findViewById(R.id.action_a_button);
+        actionBButton = findViewById(R.id.action_b_button);
+        actionCButton = findViewById(R.id.action_c_button);
 
         // Start observing the data sent to us by the ViewModel
-        viewModel.getConnectionStatus().observe(this, this::onConnectionStatus);
+        viewModel.getConnectionStatus().observe(this, this::onConnectionStatusChanged);
         viewModel.getDeviceName().observe(this, name -> setTitle(getString(R.string.device_name_format, name)));
         viewModel.getMessages().observe(this, message -> {
             if (TextUtils.isEmpty(message)) {
@@ -62,10 +71,17 @@ public class CommunicateActivity extends AppCompatActivity {
 
         // Setup the send button click action
         sendButton.setOnClickListener(v -> viewModel.sendMessage(messageBox.getText().toString()));
+
+        darkenButton.setOnClickListener(v -> viewModel.sendMessage("d"));
+        brightenButton.setOnClickListener(v -> viewModel.sendMessage("i"));
+
+        actionAButton.setOnClickListener(v -> viewModel.sendMessage("a"));
+        actionBButton.setOnClickListener(v -> viewModel.sendMessage("b"));
+        actionCButton.setOnClickListener(v -> viewModel.sendMessage("c"));
     }
 
     // Called when the ViewModel updates us of our connectivity status
-    private void onConnectionStatus(CommunicateViewModel.ConnectionStatus connectionStatus) {
+    private void onConnectionStatusChanged(CommunicateViewModel.ConnectionStatus connectionStatus) {
         switch (connectionStatus) {
             case CONNECTED:
                 connectionText.setText(R.string.status_connected);
@@ -74,6 +90,11 @@ public class CommunicateActivity extends AppCompatActivity {
                 connectButton.setEnabled(true);
                 connectButton.setText(R.string.disconnect);
                 connectButton.setOnClickListener(v -> viewModel.disconnect());
+                darkenButton.setEnabled(true);
+                brightenButton.setEnabled(true);
+                actionAButton.setEnabled(true);
+                actionBButton.setEnabled(true);
+                actionCButton.setEnabled(true);
                 break;
 
             case CONNECTING:
@@ -82,6 +103,11 @@ public class CommunicateActivity extends AppCompatActivity {
                 sendButton.setEnabled(false);
                 connectButton.setEnabled(false);
                 connectButton.setText(R.string.connect);
+                darkenButton.setEnabled(false);
+                brightenButton.setEnabled(false);
+                actionAButton.setEnabled(false);
+                actionBButton.setEnabled(false);
+                actionCButton.setEnabled(false);
                 break;
 
             case DISCONNECTED:
@@ -91,6 +117,11 @@ public class CommunicateActivity extends AppCompatActivity {
                 connectButton.setEnabled(true);
                 connectButton.setText(R.string.connect);
                 connectButton.setOnClickListener(v -> viewModel.connect());
+                darkenButton.setEnabled(false);
+                brightenButton.setEnabled(false);
+                actionAButton.setEnabled(false);
+                actionBButton.setEnabled(false);
+                actionCButton.setEnabled(false);
                 break;
         }
     }
