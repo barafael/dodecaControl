@@ -87,7 +87,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Action A" />
+                android:text="@string/action_a" />
 
             <Button
                 android:id="@+id/action_b_button"
@@ -95,7 +95,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Action B" />
+                android:text="@string/action_b" />
 
             <Button
                 android:id="@+id/action_c_button"
@@ -103,7 +103,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Action C" />
+                android:text="@string/action_c" />
 
         </LinearLayout>
 
@@ -120,7 +120,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Darken" />
+                android:text="@string/darken" />
 
             <Button
                 android:id="@+id/brighten_button"
@@ -128,7 +128,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Brighten" />
+                android:text="@string/brighten" />
         </LinearLayout>
 
         <LinearLayout
