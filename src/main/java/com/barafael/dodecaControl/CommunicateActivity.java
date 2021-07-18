@@ -1,5 +1,6 @@
 package com.barafael.dodecaControl;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.MenuItem;
@@ -7,9 +8,20 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.barafael.dodecaControl.parser.CommandList;
+import com.barafael.dodecaControl.parser.Revision;
+import com.barafael.dodecaControl.parser.StateList;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class CommunicateActivity extends AppCompatActivity {
 
     private TextView connectionText, messagesView;
@@ -19,7 +31,14 @@ public class CommunicateActivity extends AppCompatActivity {
 
     private Button actionAButton, actionBButton, actionCButton;
 
+    private List<Button> actionButtons = new ArrayList<>();
+    private List<String> defaultActionNames = Arrays.asList("Action A", "Action B", "Action C");
+
     private CommunicateViewModel viewModel;
+
+    private Optional<CommandList> actionList = Optional.empty();
+    private Optional<StateList> stateList = Optional.empty();
+    private Optional<Revision> revision = Optional.empty();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +72,8 @@ public class CommunicateActivity extends AppCompatActivity {
         actionBButton = findViewById(R.id.action_b_button);
         actionCButton = findViewById(R.id.action_c_button);
 
+        actionButtons = Arrays.asList(actionAButton, actionBButton, actionCButton);
+
         // Start observing the data sent to us by the ViewModel
         viewModel.getConnectionStatus().observe(this, this::onConnectionStatusChanged);
         viewModel.getDeviceName().observe(this, name -> setTitle(getString(R.string.device_name_format, name)));
@@ -68,6 +89,16 @@ public class CommunicateActivity extends AppCompatActivity {
                 messageBox.setText(message);
             }
         });
+        viewModel.getRevision().observe(this, message -> {
+            System.out.println("Observed new revision: " + message);
+        });
+        viewModel.getCommandlist().observe(this, message -> {
+            System.out.println("Observed new command list: " + message.getCommands());
+            setCommandNames(message.getCommands());
+        });
+        viewModel.getStatelist().observe(this, message -> {
+            System.out.println("Observed new state list: " + message);
+        });
 
         // Setup the send button click action
         sendButton.setOnClickListener(v -> viewModel.sendMessage(messageBox.getText().toString()));
@@ -80,16 +111,28 @@ public class CommunicateActivity extends AppCompatActivity {
         actionCButton.setOnClickListener(v -> viewModel.sendMessage("c"));
     }
 
+    private void setCommandNames(List<String> commands) {
+        // First, reset all names
+        for (int index = 0; index < defaultActionNames.size(); index++) {
+            actionButtons.get(index).setText(defaultActionNames.get(index));
+        }
+        // Then, set the name in commands
+        for (int index = 0; index < commands.size(); index++) {
+            actionButtons.get(index).setText(commands.get(index));
+        }
+    }
+
     // Called when the ViewModel updates us of our connectivity status
     private void onConnectionStatusChanged(CommunicateViewModel.ConnectionStatus connectionStatus) {
         switch (connectionStatus) {
             case CONNECTED:
                 connectionText.setText(R.string.status_connected);
+                connectButton.setText(R.string.disconnect);
+                connectButton.setOnClickListener(v -> viewModel.disconnect());
+
                 messageBox.setEnabled(true);
                 sendButton.setEnabled(true);
                 connectButton.setEnabled(true);
-                connectButton.setText(R.string.disconnect);
-                connectButton.setOnClickListener(v -> viewModel.disconnect());
                 darkenButton.setEnabled(true);
                 brightenButton.setEnabled(true);
                 actionAButton.setEnabled(true);
@@ -99,31 +142,37 @@ public class CommunicateActivity extends AppCompatActivity {
 
             case CONNECTING:
                 connectionText.setText(R.string.status_connecting);
-                messageBox.setEnabled(false);
-                sendButton.setEnabled(false);
-                connectButton.setEnabled(false);
                 connectButton.setText(R.string.connect);
-                darkenButton.setEnabled(false);
-                brightenButton.setEnabled(false);
-                actionAButton.setEnabled(false);
-                actionBButton.setEnabled(false);
-                actionCButton.setEnabled(false);
+
+                connectButton.setEnabled(false);
+
+                resetState();
                 break;
 
             case DISCONNECTED:
                 connectionText.setText(R.string.status_disconnected);
-                messageBox.setEnabled(false);
-                sendButton.setEnabled(false);
-                connectButton.setEnabled(true);
-                connectButton.setText(R.string.connect);
                 connectButton.setOnClickListener(v -> viewModel.connect());
-                darkenButton.setEnabled(false);
-                brightenButton.setEnabled(false);
-                actionAButton.setEnabled(false);
-                actionBButton.setEnabled(false);
-                actionCButton.setEnabled(false);
+                connectButton.setText(R.string.connect);
+
+                connectButton.setEnabled(true);
+
+                resetState();
                 break;
         }
+    }
+
+    void resetState() {
+        messageBox.setEnabled(false);
+        sendButton.setEnabled(false);
+        darkenButton.setEnabled(false);
+        brightenButton.setEnabled(false);
+        actionAButton.setEnabled(false);
+        actionBButton.setEnabled(false);
+        actionCButton.setEnabled(false);
+
+        actionList = Optional.empty();
+        stateList = Optional.empty();
+        revision = Optional.empty();
     }
 
     // Called when a button in the action bar is pressed

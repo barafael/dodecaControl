@@ -1,19 +1,29 @@
 package com.barafael.dodecaControl;
 
 import android.app.Application;
+import android.os.Build;
 import android.text.TextUtils;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.annotation.StringRes;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.barafael.dodecaControl.parser.CommandList;
+import com.barafael.dodecaControl.parser.Parser;
+import com.barafael.dodecaControl.parser.Revision;
+import com.barafael.dodecaControl.parser.StateList;
 import com.harrysoft.androidbluetoothserial.BluetoothManager;
 import com.harrysoft.androidbluetoothserial.SimpleBluetoothDeviceInterface;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -33,6 +43,12 @@ public class CommunicateViewModel extends AndroidViewModel {
 
     // The messages feed that the activity sees
     private final MutableLiveData<String> messagesData = new MutableLiveData<>();
+    // The revision string
+    private final MutableLiveData<Revision> revisionMutableLiveData = new MutableLiveData<>();
+    // The state list
+    private final MutableLiveData<StateList> stateListMutableLiveData = new MutableLiveData<>();
+    // The command list
+    private final MutableLiveData<CommandList> commandListMutableLiveData = new MutableLiveData<>();
     // The connection status that the activity sees
     private final MutableLiveData<ConnectionStatus> connectionStatusData = new MutableLiveData<>();
     // The device name that the activity sees
@@ -133,6 +149,15 @@ public class CommunicateViewModel extends AndroidViewModel {
             // Reset the conversation
             messages = new StringBuilder();
             messagesData.postValue(messages.toString());
+
+            // Request the state list
+            sendMessage("l");
+
+            // Request the action list
+            sendMessage("g");
+
+            // Request the revision string
+            sendMessage("v");
         } else {
             // deviceInterface was null, so the connection failed
             toast(R.string.connection_failed);
@@ -141,9 +166,41 @@ public class CommunicateViewModel extends AndroidViewModel {
     }
 
     // Adds a received message to the conversation
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void onMessageReceived(String message) {
         messages.append(deviceName).append(": ").append(message).append('\n');
         messagesData.postValue(messages.toString());
+
+        Pattern pattern = Pattern.compile("(^\\w+):((.*;)*(.+))");
+        Matcher matcher = pattern.matcher(message);
+
+        if (matcher.find()) {
+            String prefix = matcher.group(1);
+            String values = matcher.group(2);
+
+            assert values != null;
+            assert prefix != null;
+            switch (prefix) {
+                case "Revision":
+                    Optional<Revision> revision = Parser.parseRevision(values);
+                    revision.ifPresent(revisionMutableLiveData::postValue);
+                    break;
+                case "States":
+                    Optional<StateList> stateList = Parser.parseStatelist(values);
+                    stateList.ifPresent(stateListMutableLiveData::postValue);
+                    break;
+                case "Commands":
+                    Optional<CommandList> commandList = Parser.parseCommandlist(values);
+                    commandList.ifPresent(commandList1 -> {
+                        System.out.println(commandList1.getCommands());
+                    });
+                    commandList.ifPresent(commandListMutableLiveData::postValue);
+                    break;
+                default:
+                    break;
+            }
+
+        }
     }
 
     // Adds a sent message to the conversation
@@ -153,6 +210,10 @@ public class CommunicateViewModel extends AndroidViewModel {
         messagesData.postValue(messages.toString());
         // Reset the message box
         messageData.postValue("");
+
+        if (message.matches("^(n|p)$")) {
+            sendMessage("g");
+        }
     }
 
     // Send a message
@@ -195,6 +256,18 @@ public class CommunicateViewModel extends AndroidViewModel {
     // Getter method for the activity to use.
     public LiveData<String> getMessage() {
         return messageData;
+    }
+
+    public LiveData<Revision> getRevision() {
+        return revisionMutableLiveData;
+    }
+
+    public LiveData<CommandList> getCommandlist() {
+        return commandListMutableLiveData;
+    }
+
+    public LiveData<StateList> getStatelist() {
+        return stateListMutableLiveData;
     }
 
     // An enum that is passed to the activity to indicate the current connection status
