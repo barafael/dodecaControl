@@ -47,7 +47,7 @@ android {
 
 dependencies {
     // BlueTooth Serial Library
-    implementation 'com.github.barafael:android-bluetooth-serial:master-SNAPSHOT'
+    implementation 'com.github.harry1453:android-bluetooth-serial:master-SNAPSHOT'
 
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"

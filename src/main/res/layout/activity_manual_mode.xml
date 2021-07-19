@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_alignParentRight="true"
     tools:context=".ManualModeActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -14,7 +15,7 @@
         <androidx.appcompat.widget.Toolbar
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
+            android:background="@color/colorPrimaryDark"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
         <LinearLayout
@@ -27,21 +28,68 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/strip" />
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
-                <EditText
-                    android:id="@+id/strip_entry"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:inputType="number"
-                    android:textAlignment="viewEnd"
-                    android:importantForAutofill="no" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="1"
+                        android:editable="false"
+                        android:gravity="center_vertical"
+                        android:text="@string/strip"
+                        android:textSize="20sp"
+                        android:typeface="monospace" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:text="@string/index"
+                        android:textSize="20sp"
+                        android:typeface="monospace" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:id="@+id/strip_entry"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:importantForAutofill="no"
+                        android:inputType="number"
+                        android:textAlignment="center"
+                        android:typeface="monospace" />
+
+                    <EditText
+                        android:id="@+id/index_entry"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:importantForAutofill="no"
+                        android:inputType="number"
+                        android:textAlignment="center"
+                        android:typeface="monospace" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
             </LinearLayout>
 
@@ -50,22 +98,6 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/index" />
-
-                <EditText
-                    android:id="@+id/index_entry"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:inputType="number"
-                    android:textAlignment="viewEnd"
-                    android:importantForAutofill="no" />
 
             </LinearLayout>
 
@@ -94,7 +126,8 @@
                 android:id="@+id/go_manual"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/go" />
+                android:text="@string/go"
+                android:typeface="monospace" />
 
         </LinearLayout>
 

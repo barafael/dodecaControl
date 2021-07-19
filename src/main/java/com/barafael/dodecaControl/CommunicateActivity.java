@@ -35,11 +35,11 @@ public class CommunicateActivity extends AppCompatActivity {
     private Button gotoManualModeButton;
 
     private List<Button> actionButtons = new ArrayList<>();
-    private List<String> defaultActionNames = Arrays.asList("Action A", "Action B", "Action C");
+    private final List<String> defaultActionNames = Arrays.asList("Action A", "Action B", "Action C");
 
     private CommunicateViewModel viewModel;
 
-    private Optional<CommandList> actionList = Optional.empty();
+    private Optional<CommandList> commandList = Optional.empty();
     private Optional<StateList> stateList = Optional.empty();
     private Optional<Revision> revision = Optional.empty();
 
@@ -178,7 +178,7 @@ public class CommunicateActivity extends AppCompatActivity {
         actionBButton.setEnabled(false);
         actionCButton.setEnabled(false);
 
-        actionList = Optional.empty();
+        commandList = Optional.empty();
         stateList = Optional.empty();
         revision = Optional.empty();
     }
