@@ -39,7 +39,8 @@ public class CommunicateViewModel extends AndroidViewModel {
 
     // Our Bluetooth Device! When disconnected it is null, so make sure we know that we need to deal with it potentially being null
     @Nullable
-    private SimpleBluetoothDeviceInterface deviceInterface;
+    //private SimpleBluetoothDeviceInterface deviceInterface;
+    private BluetoothSingleton device;
 
     // The messages feed that the activity sees
     private final MutableLiveData<String> messagesData = new MutableLiveData<>();
@@ -125,12 +126,12 @@ public class CommunicateViewModel extends AndroidViewModel {
     // Called when the user presses the disconnect button
     public void disconnect() {
         // Check we were connected
-        if (connectionAttemptedOrMade && deviceInterface != null) {
+        if (connectionAttemptedOrMade && BluetoothSingleton.getInstance().getBluetoothDeviceInterface() != null) {
             connectionAttemptedOrMade = false;
             // Use the library to close the connection
-            bluetoothManager.closeDevice(deviceInterface);
+            bluetoothManager.closeDevice(BluetoothSingleton.getInstance().getBluetoothDeviceInterface());
             // Set it to null so no one tries to use it
-            deviceInterface = null;
+            BluetoothSingleton.getInstance().setInterface(null);
             // Tell the activity we are disconnected
             connectionStatusData.postValue(ConnectionStatus.DISCONNECTED);
         }
@@ -138,12 +139,12 @@ public class CommunicateViewModel extends AndroidViewModel {
 
     // Called once the library connects a bluetooth device
     private void onConnected(SimpleBluetoothDeviceInterface deviceInterface) {
-        this.deviceInterface = deviceInterface;
-        if (this.deviceInterface != null) {
+        BluetoothSingleton.getInstance().setInterface(deviceInterface);
+        if (BluetoothSingleton.getInstance().getBluetoothDeviceInterface() != null) {
             // We have a device! Tell the activity we are connected.
             connectionStatusData.postValue(ConnectionStatus.CONNECTED);
             // Setup the listeners for the interface
-            this.deviceInterface.setListeners(this::onMessageReceived, this::onMessageSent, t -> toast(R.string.message_send_error));
+            BluetoothSingleton.getInstance().getBluetoothDeviceInterface().setListeners(this::onMessageReceived, this::onMessageSent, t -> toast(R.string.message_send_error));
             // Tell the user we are connected.
             toast(R.string.connected);
             // Reset the conversation
@@ -219,8 +220,8 @@ public class CommunicateViewModel extends AndroidViewModel {
     // Send a message
     public void sendMessage(String message) {
         // Check we have a connected device and the message is not empty, then send the message
-        if (deviceInterface != null && !TextUtils.isEmpty(message)) {
-            deviceInterface.sendMessage(message);
+        if (BluetoothSingleton.getInstance().getBluetoothDeviceInterface() != null && !TextUtils.isEmpty(message)) {
+            BluetoothSingleton.getInstance().getBluetoothDeviceInterface().sendMessage(message);
         }
     }
 

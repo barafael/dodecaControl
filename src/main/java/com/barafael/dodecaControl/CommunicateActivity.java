@@ -1,5 +1,6 @@
 package com.barafael.dodecaControl;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -30,6 +31,8 @@ public class CommunicateActivity extends AppCompatActivity {
     private Button darkenButton, brightenButton;
 
     private Button actionAButton, actionBButton, actionCButton;
+
+    private Button gotoManualModeButton;
 
     private List<Button> actionButtons = new ArrayList<>();
     private List<String> defaultActionNames = Arrays.asList("Action A", "Action B", "Action C");
@@ -74,6 +77,8 @@ public class CommunicateActivity extends AppCompatActivity {
 
         actionButtons = Arrays.asList(actionAButton, actionBButton, actionCButton);
 
+        gotoManualModeButton = findViewById(R.id.gotomanualmode);
+
         // Start observing the data sent to us by the ViewModel
         viewModel.getConnectionStatus().observe(this, this::onConnectionStatusChanged);
         viewModel.getDeviceName().observe(this, name -> setTitle(getString(R.string.device_name_format, name)));
@@ -109,6 +114,13 @@ public class CommunicateActivity extends AppCompatActivity {
         actionAButton.setOnClickListener(v -> viewModel.sendMessage("a"));
         actionBButton.setOnClickListener(v -> viewModel.sendMessage("b"));
         actionCButton.setOnClickListener(v -> viewModel.sendMessage("c"));
+
+        gotoManualModeButton.setOnClickListener(v -> openManualModeActivity());
+    }
+
+    public void openManualModeActivity() {
+        Intent intent = new Intent(this, com.barafael.dodecaControl.ManualModeActivity.class);
+        startActivity(intent);
     }
 
     private void setCommandNames(List<String> commands) {
