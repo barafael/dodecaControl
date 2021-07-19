@@ -38,7 +38,6 @@
         android:textSize="@dimen/title" />
 
     <ScrollView
-        android:id="@+id/messages_scroll"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -74,10 +73,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="goto manual mode" />
+            android:text="@string/goto_manual_mode" />
 
         <View
-            android:id="@+id/divider"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_weight="1"

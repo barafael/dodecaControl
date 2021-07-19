@@ -52,7 +52,7 @@ public class MainActivityViewModel extends AndroidViewModel {
 
     // Called by the activity to request that we refresh the list of paired devices
     public void refreshPairedDevices() {
-        pairedDeviceList.postValue(bluetoothManager.getPairedDevicesList());
+        pairedDeviceList.postValue(bluetoothManager.getPairedDevices());
     }
 
     // Called when the activity finishes - clear up after ourselves.

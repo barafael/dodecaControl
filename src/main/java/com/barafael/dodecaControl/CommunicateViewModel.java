@@ -19,7 +19,6 @@ import com.harrysoft.androidbluetoothserial.BluetoothManager;
 import com.harrysoft.androidbluetoothserial.SimpleBluetoothDeviceInterface;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 import java.util.regex.Matcher;
@@ -36,11 +35,6 @@ public class CommunicateViewModel extends AndroidViewModel {
 
     // Our BluetoothManager!
     private BluetoothManager bluetoothManager;
-
-    // Our Bluetooth Device! When disconnected it is null, so make sure we know that we need to deal with it potentially being null
-    @Nullable
-    //private SimpleBluetoothDeviceInterface deviceInterface;
-    private BluetoothSingleton device;
 
     // The messages feed that the activity sees
     private final MutableLiveData<String> messagesData = new MutableLiveData<>();
@@ -192,9 +186,7 @@ public class CommunicateViewModel extends AndroidViewModel {
                     break;
                 case "Commands":
                     Optional<CommandList> commandList = Parser.parseCommandlist(values);
-                    commandList.ifPresent(commandList1 -> {
-                        System.out.println(commandList1.getCommands());
-                    });
+                    commandList.ifPresent(commandList1 -> System.out.println(commandList1.getCommands()));
                     commandList.ifPresent(commandListMutableLiveData::postValue);
                     break;
                 default:
@@ -212,7 +204,7 @@ public class CommunicateViewModel extends AndroidViewModel {
         // Reset the message box
         messageData.postValue("");
 
-        if (message.matches("^(n|p)$")) {
+        if (message.matches("^([np])$")) {
             sendMessage("g");
         }
     }

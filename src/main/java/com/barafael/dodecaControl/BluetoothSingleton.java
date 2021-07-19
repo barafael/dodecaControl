@@ -3,7 +3,7 @@ package com.barafael.dodecaControl;
 import com.harrysoft.androidbluetoothserial.SimpleBluetoothDeviceInterface;
 
 public class BluetoothSingleton {
-    private BluetoothSingleton() {};
+    private BluetoothSingleton() {}
 
     public static BluetoothSingleton getInstance() {
         if (INSTANCE == null) {

@@ -26,8 +26,7 @@ public class Parser {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public static Optional<CommandList> parseCommandlist(String string) {
-        Optional<CommandList> commandList = Optional.of(new CommandList(string.split(";")));
-        return commandList;
+        return Optional.of(new CommandList(string.split(";")));
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)

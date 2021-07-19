@@ -11,13 +11,15 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.barafael.dodecaControl.databinding.FragmentFirstBinding;
 
+import org.jetbrains.annotations.NotNull;
+
 public class FirstFragment extends Fragment {
 
     private FragmentFirstBinding binding;
 
     @Override
     public View onCreateView(
-            LayoutInflater inflater, ViewGroup container,
+            @NotNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
     ) {
 
@@ -28,14 +30,6 @@ public class FirstFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        binding.buttonFirst.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                NavHostFragment.findNavController(FirstFragment.this)
-                        .navigate(R.id.action_FirstFragment_to_SecondFragment);
-            }
-        });
     }
 
     @Override

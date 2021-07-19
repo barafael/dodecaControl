@@ -94,16 +94,12 @@ public class CommunicateActivity extends AppCompatActivity {
                 messageBox.setText(message);
             }
         });
-        viewModel.getRevision().observe(this, message -> {
-            System.out.println("Observed new revision: " + message);
-        });
+        viewModel.getRevision().observe(this, message -> System.out.println("Observed new revision: " + message));
         viewModel.getCommandlist().observe(this, message -> {
             System.out.println("Observed new command list: " + message.getCommands());
             setCommandNames(message.getCommands());
         });
-        viewModel.getStatelist().observe(this, message -> {
-            System.out.println("Observed new state list: " + message);
-        });
+        viewModel.getStatelist().observe(this, message -> System.out.println("Observed new state list: " + message));
 
         // Setup the send button click action
         sendButton.setOnClickListener(v -> viewModel.sendMessage(messageBox.getText().toString()));
