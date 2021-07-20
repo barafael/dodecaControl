@@ -174,6 +174,8 @@ public class CommunicateViewModel extends AndroidViewModel {
             String values = matcher.group(2);
 
             assert values != null;
+            values = values.trim();
+
             assert prefix != null;
             switch (prefix) {
                 case "Revision":
@@ -186,7 +188,6 @@ public class CommunicateViewModel extends AndroidViewModel {
                     break;
                 case "Commands":
                     Optional<CommandList> commandList = Parser.parseCommandlist(values);
-                    commandList.ifPresent(commandList1 -> System.out.println(commandList1.getCommands()));
                     commandList.ifPresent(commandListMutableLiveData::postValue);
                     break;
                 default:
