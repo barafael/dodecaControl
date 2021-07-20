@@ -32,4 +32,6 @@
     <string name="red">Red</string>
     <string name="green">Green</string>
     <string name="blue">Blue</string>
+    <string name="enter_strip_index">Enter Strip Index</string>
+    <string name="enter_led_index">Enter LED index</string>
 </resources>

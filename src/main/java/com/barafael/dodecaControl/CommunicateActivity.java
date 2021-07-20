@@ -20,28 +20,23 @@ import com.barafael.dodecaControl.parser.StateList;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class CommunicateActivity extends AppCompatActivity {
 
+    private final List<String> defaultActionNames = Arrays.asList("Action A", "Action B", "Action C");
     private TextView connectionText, messagesView;
     private EditText messageBox;
     private Button sendButton, connectButton;
     private Button darkenButton, brightenButton;
-
     private Button actionAButton, actionBButton, actionCButton;
-
     private Button gotoManualModeButton;
-
     private List<Button> actionButtons = new ArrayList<>();
-    private final List<String> defaultActionNames = Arrays.asList("Action A", "Action B", "Action C");
-
     private CommunicateViewModel viewModel;
 
-    private Optional<CommandList> commandList = Optional.empty();
-    private Optional<StateList> stateList = Optional.empty();
-    private Optional<Revision> revision = Optional.empty();
+    private CommandList commandList;
+    private StateList stateList;
+    private Revision revision;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,9 +89,7 @@ public class CommunicateActivity extends AppCompatActivity {
                 messageBox.setText(message);
             }
         });
-        viewModel.getCommandlist().observe(this, message -> {
-            setCommandNames(message.getCommands());
-        });
+        viewModel.getCommandlist().observe(this, message -> setCommandNames(message.getCommands()));
 
         // Setup the send button click action
         sendButton.setOnClickListener(v -> viewModel.sendMessage(messageBox.getText().toString()));
@@ -175,9 +168,9 @@ public class CommunicateActivity extends AppCompatActivity {
         actionBButton.setEnabled(false);
         actionCButton.setEnabled(false);
 
-        commandList = Optional.empty();
-        stateList = Optional.empty();
-        revision = Optional.empty();
+        commandList = new CommandList();
+        stateList = new StateList();
+        revision = new Revision(0, 0, 0);
     }
 
     // Called when a button in the action bar is pressed
