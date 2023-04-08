@@ -29,6 +29,7 @@ public class CommunicateActivity extends AppCompatActivity {
     private EditText messageBox;
     private Button sendButton, connectButton;
     private Button darkenButton, brightenButton;
+    private Button nextButton, previousButton;
     private Button actionAButton, actionBButton, actionCButton;
     private Button gotoManualModeButton;
     private List<Button> actionButtons = new ArrayList<>();
@@ -66,6 +67,9 @@ public class CommunicateActivity extends AppCompatActivity {
         darkenButton = findViewById(R.id.darken_button);
         brightenButton = findViewById(R.id.brighten_button);
 
+        previousButton = findViewById(R.id.previous_button);
+        nextButton = findViewById(R.id.next_button);
+
         actionAButton = findViewById(R.id.action_a_button);
         actionBButton = findViewById(R.id.action_b_button);
         actionCButton = findViewById(R.id.action_c_button);
@@ -100,6 +104,9 @@ public class CommunicateActivity extends AppCompatActivity {
         actionAButton.setOnClickListener(v -> viewModel.sendMessage("a"));
         actionBButton.setOnClickListener(v -> viewModel.sendMessage("b"));
         actionCButton.setOnClickListener(v -> viewModel.sendMessage("c"));
+
+        previousButton.setOnClickListener(v -> viewModel.sendMessage("p"));
+        nextButton.setOnClickListener(v -> viewModel.sendMessage("n"));
 
         gotoManualModeButton.setOnClickListener(v -> openManualModeActivity());
     }
@@ -136,6 +143,9 @@ public class CommunicateActivity extends AppCompatActivity {
                 actionAButton.setEnabled(true);
                 actionBButton.setEnabled(true);
                 actionCButton.setEnabled(true);
+                previousButton.setEnabled(true);
+                nextButton.setEnabled(true);
+                gotoManualModeButton.setEnabled(true);
                 break;
 
             case CONNECTING:
@@ -167,6 +177,10 @@ public class CommunicateActivity extends AppCompatActivity {
         actionAButton.setEnabled(false);
         actionBButton.setEnabled(false);
         actionCButton.setEnabled(false);
+        previousButton.setEnabled(false);
+        nextButton.setEnabled(false);
+
+        gotoManualModeButton.setEnabled(false);
 
         commandList = new CommandList();
         stateList = new StateList();

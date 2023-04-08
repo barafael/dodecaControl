@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Bluetooth Serial Interface</string>
+    <string name="app_name">DodecaControl</string>
     <string name="messages">Messages:</string>
     <string name="message">Message</string>
     <string name="send">Send</string>
@@ -34,4 +34,6 @@
     <string name="blue">Blue</string>
     <string name="enter_strip_index">Enter Strip Index</string>
     <string name="enter_led_index">Enter LED index</string>
+    <string name="previous">previous</string>
+    <string name="next">next</string>
 </resources>

@@ -151,14 +151,14 @@
                     android:orientation="vertical">
 
                     <SeekBar
-                        android:id="@+id/green_slide"
+                        android:id="@+id/red_slide"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingTop="10dp"
                         android:paddingBottom="10dp" />
 
                     <SeekBar
-                        android:id="@+id/red_slide"
+                        android:id="@+id/green_slide"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingTop="10dp"
